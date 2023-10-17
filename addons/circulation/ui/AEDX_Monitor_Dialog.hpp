@@ -5,6 +5,7 @@ class RscLine;
 class RscText;
 class RscBackground;
 class RscButton;
+class RscStructuredText;
 
 class GVAR(AEDX_Monitor_Dialog) {
     idd = IDC_AEDX_MONITOR;
@@ -53,7 +54,7 @@ class GVAR(AEDX_Monitor_Dialog) {
             text = QPATHTOF(ui\ekg_slider.paa);
         };
         class HeartRateVitalsDisplayBackground: RscText {
-            idc = -1;
+            idc = IDC_DISPLAY_HEARTRATE_TEXT;
             x = QUOTE(pxToScreen_X(552));
             y = QUOTE(pxToScreen_Y(1166));
             w = QUOTE(pxToScreen_W(190));
@@ -129,6 +130,41 @@ class GVAR(AEDX_Monitor_Dialog) {
             font = "RobotoCondensedLight";
             text = "%";
         };
+        class SpO2PulseRateDisplayBorder: RscText {
+            idc = IDC_DISPLAY_PULSERATEBORDER;
+            x = QUOTE(pxToScreen_X(1366));
+            y = QUOTE(pxToScreen_Y(1207));
+            w = QUOTE(pxToScreen_W(26));
+            h = QUOTE(pxToScreen_H(80));
+            type = 0;
+            style = 0;
+            font = "RobotoCondensed";
+            sizeEx = QUOTE(GRID_H * 0.6);
+            shadow = 0;
+            colorBackground[] = {0.99,0.97,0.02,1};
+            colorText[] = {0,0,0,0};
+            text = "";
+            show = 0;
+        };
+        class SpO2PulseRateDisplayBackground: SpO2PulseRateDisplayBorder {
+            idc = IDC_DISPLAY_PULSERATEBG;
+            x = QUOTE(pxToScreen_X(1368));
+            y = QUOTE(pxToScreen_Y(1210));
+            w = QUOTE(pxToScreen_W(20));
+            h = QUOTE(pxToScreen_H(74));
+            colorBackground[] = {0,0,0,1};
+        };
+        class SpO2PulseRateDisplayBar: SpO2PulseRateDisplayBorder {
+            idc = IDC_DISPLAY_PULSERATEDSPBAR;
+            x = QUOTE(pxToScreen_X(1370));
+            y = QUOTE(pxToScreen_Y(1211));
+            w = QUOTE(pxToScreen_W(17));
+            h = QUOTE(pxToScreen_H(71));
+        };
+        class SpO2PulseRateDisplayBarB: SpO2PulseRateDisplayBar {
+            idc = IDC_DISPLAY_PULSERATEBAR;
+            colorBackground[] = {0,0,0,1};
+        };
         class HeartRateDisplay: RscText {
             idc = IDC_DISPLAY_HEARTRATE;
             x = QUOTE(pxToScreen_X(552));
@@ -179,7 +215,8 @@ class GVAR(AEDX_Monitor_Dialog) {
         };
         class SpO2Display: HeartRateDisplay {
             idc = IDC_DISPLAY_SPO2;
-            x = QUOTE(pxToScreen_X(1204));
+            x = QUOTE(pxToScreen_X(1200));
+            w = QUOTE(pxToScreen_W(170));
             colorText[] = {0.99,0.97,0.02,1};
             text = "---";
         };
@@ -229,7 +266,7 @@ class GVAR(AEDX_Monitor_Dialog) {
             shadow = 0;
             colorBackground[] = {0,0,0,0};
             colorText[] = {0,1,0,1};
-            text = "Check Pads";
+            text = LSTRING(AEDX_Monitor_CheckPads);
         };
         class ChargingStatusBlackBackground: BlackBackground {
             idc = IDC_CHARGE_BBACKGROUND;
@@ -464,6 +501,35 @@ class GVAR(AEDX_Monitor_Dialog) {
             text = QPATHTOF(ui\shockbutton.paa);
             show = 0;
         };
+        class AutoModeFeedbackMessageTop: RscText {
+            idc = IDC_AEDMODE_MSG_TOP;
+            x = QUOTE(pxToScreen_X(579));
+            y = QUOTE(pxToScreen_Y(1137));
+            w = QUOTE(pxToScreen_W(758));
+            h = QUOTE(pxToScreen_H(61));
+            type = 0;
+            style = 2;
+            font = "RobotoCondensed";
+            sizeEx = QUOTE(GRID_H * 1);
+            shadow = 0;
+            colorBackground[] = {0,0,0,0};
+            colorText[] = {1,1,1,1};
+            text = "";
+            show = 0;
+        };
+        class AutoModeFeedbackMessage: AutoModeFeedbackMessageTop {
+            idc = IDC_AEDMODE_MSG;
+            y = QUOTE(pxToScreen_Y(1198));
+            h = QUOTE(pxToScreen_H(150));
+            font = "RobotoCondensedBold";
+            sizeEx = QUOTE(GRID_H * 1.6);
+            text = "";
+        };
+        class AEDModeFeedbackMessageBackground: EKG {
+            idc = IDC_AEDMODE_MSG_BG;
+            text = QPATHTOF(ui\AEDmode_bg.paa);
+            show = 0;
+        };
     };
 
     class Controls {
@@ -497,13 +563,13 @@ class GVAR(AEDX_Monitor_Dialog) {
             y = QUOTE(pxToScreen_Y(1487));
             w = QUOTE(pxToScreen_W(122));
             h = QUOTE(pxToScreen_H(89));
-            onButtonClick = QUOTE(if (!(GVAR(AEDX_MonitorTarget) isEqualTo objNull) && !(GVAR(AEDX_MonitorTarget) getVariable [ARR_2(QQGVAR(DefibrillatorInUse), false)])) then {[ARR_3(player, GVAR(AEDX_MonitorTarget),'AEDX')] call FUNC(AED_Analyze)});
+            onButtonClick = QUOTE(if (!(GVAR(AEDX_MonitorTarget) isEqualTo objNull) && !(GVAR(AEDX_MonitorTarget) getVariable [ARR_2(QQGVAR(DefibrillatorInUse), false)])) then {[ARR_3(player, GVAR(AEDX_MonitorTarget),'AEDX')] call FUNC(AED_Analyze); [] call FUNC(AEDX_ViewMonitor_AnalyzeFeedback)});
             tooltip = CSTRING(AnalyzeRhythm);
         };
         class ChargeButton: AnalyzeButton {
             idc = -1;
             x = QUOTE(pxToScreen_X(1316));
-            onButtonClick = QUOTE(if (!(GVAR(AEDX_MonitorTarget) isEqualTo objNull) && !(GVAR(AEDX_MonitorTarget) getVariable [ARR_2(QQGVAR(DefibrillatorInUse), false)])) then {[ARR_2(player, GVAR(AEDX_MonitorTarget))] call FUNC(Defibrillator_ManualCharge); [] call FUNC(AEDX_ViewMonitor_Charging)});
+            onButtonClick = QUOTE(if (!(GVAR(AEDX_MonitorTarget) isEqualTo objNull) && !(GVAR(AEDX_MonitorTarget) getVariable [ARR_2(QQGVAR(DefibrillatorInUse), false)])) then {[ARR_2(player, GVAR(AEDX_MonitorTarget))] call FUNC(Defibrillator_ManualCharge); [true] call FUNC(AEDX_ViewMonitor_AnalyzeFeedback); [] call FUNC(AEDX_ViewMonitor_Charging)});
             tooltip = CSTRING(Defibrillator_Action_Charge);
         };
         class CancelChargeButton: ShockButton {

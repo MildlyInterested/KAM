@@ -13,7 +13,7 @@ PREP_RECOMPILE_END;
     QGVAR(RequireInsIV),
     "CHECKBOX",
     [LLSTRING(SETTING_REQUIRE_INS_IV),LLSTRING(SETTING_REQUIRE_INS_IV_DESC)],
-    [CBA_SETTINGS_CAT, LSTRING(SubCategory_Basic)],
+    [CBA_SETTINGS_CAT, ELSTRING(GUI,SubCategory_Basic)],
     [false],
     true
 ] call CBA_Settings_fnc_init;
@@ -22,7 +22,7 @@ PREP_RECOMPILE_END;
     QGVAR(MedicationsRequireInsIV),
     "CHECKBOX",
     [LLSTRING(SETTING_REQUIRE_INS_IV_Medications),LLSTRING(SETTING_REQUIRE_INS_IV_Medications_DESC)],
-    [CBA_SETTINGS_CAT, LSTRING(SubCategory_Basic)],
+    [CBA_SETTINGS_CAT, ELSTRING(GUI,SubCategory_Basic)],
     [false],
     true
 ] call CBA_Settings_fnc_init;
@@ -31,7 +31,7 @@ PREP_RECOMPILE_END;
     QGVAR(IVdropEnable),
     "CHECKBOX",
     [LLSTRING(IV_DROP_ENABLE)],
-    [CBA_SETTINGS_CAT, LSTRING(SubCategory_Basic)],
+    [CBA_SETTINGS_CAT, ELSTRING(GUI,SubCategory_Basic)],
     [true],
     true
 ] call CBA_Settings_fnc_init;
@@ -40,7 +40,7 @@ PREP_RECOMPILE_END;
     QGVAR(IVdrop),
     "SLIDER",
     [LLSTRING(IV_DROP),LLSTRING(IV_DROP_TIME_DESC)],
-    [CBA_SETTINGS_CAT, LSTRING(SubCategory_Basic)],
+    [CBA_SETTINGS_CAT, ELSTRING(GUI,SubCategory_Basic)],
     [60, 1200, 600, 0],
     true
 ] call CBA_Settings_fnc_init;
@@ -49,7 +49,7 @@ PREP_RECOMPILE_END;
     QGVAR(IVreuse),
     "CHECKBOX",
     [LLSTRING(IV_REUSE)],
-    [CBA_SETTINGS_CAT, LSTRING(SubCategory_Basic)],
+    [CBA_SETTINGS_CAT, ELSTRING(GUI,SubCategory_Basic)],
     [false],
     true
 ] call CBA_Settings_fnc_init;
@@ -551,6 +551,25 @@ PREP_RECOMPILE_END;
     [LLSTRING(treatmentTime_Nalbuphine)],
     [CBA_SETTINGS_CAT, LSTRING(SubCategory_Nalbuphine)],
     [0.1, 10, 7, 1],
+    true
+] call CBA_Settings_fnc_init;
+
+// Penthrox Settings Category
+[
+    QGVAR(medLvl_Penthrox),
+    "LIST",
+    [LLSTRING(SETTING_medLvl_Penthrox)],
+    [CBA_SETTINGS_CAT, LSTRING(SubCategory_Penthrox)],
+    [[0, 1, 2], [ACELSTRING(medical_treatment,Anyone), ACELSTRING(medical_treatment,Medics), ACELSTRING(medical_treatment,Doctors)], 0],
+    true
+] call CBA_Settings_fnc_init;
+
+[
+    QGVAR(treatmentTime_Penthrox),
+    "SLIDER",
+    [LLSTRING(SETTING_treatmentTime_Penthrox)],
+    [CBA_SETTINGS_CAT, LSTRING(SubCategory_Penthrox)],
+    [0.1, 10, 8, 1],
     true
 ] call CBA_Settings_fnc_init;
 
